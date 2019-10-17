@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="3957567b-0d55-4189-9c2b-20201787f12b" created="2.8.2" activeEnvironment="Default" name="REST-API Project ver 1.1" resourceRoot="" updated="2.8.2 2019-08-27T17:04:01Z" abortOnError="false" runType="SEQUENTIAL" soapui-version="5.5.0" encryptionMode="Not encrypted" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:RestService" id="b92470a9-daa9-4298-8ff2-a0059b27117d" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://jbjork.nu" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart=""/><con:endpoints><con:endpoint>http://jbjork.nu</con:endpoint></con:endpoints><con:resource name="Api" path="/api/" id="3b11dc53-5118-4ab7-bcf3-4e2ab3b10d50"><con:settings/><con:parameters/><con:method name="Api" id="c1df0f4e-605b-4ead-9316-e9e902272400" method="GET"><con:settings/><con:parameters/><con:representation type="RESPONSE"><con:mediaType>application/json; charset=UTF8</con:mediaType><con:status>200</con:status><con:params/><con:element>Response</con:element></con:representation><con:request name="Request 1" id="f2584e65-d8d7-438a-95b5-a0465374f0ed" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://jbjork.nu</con:endpoint><con:request/><con:originalUri>http://jbjork.nu/api/</con:originalUri><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:request></con:method></con:resource></con:interface><con:testSuite id="12ef19fd-e0f5-4745-a7d5-7ed694d3dcca" name="API-TestSuite"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:testCase id="346fc1c1-b2d8-48f4-b664-6b5a7b8b9ce3" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Få tillbaka en lista på alla produkter." searchProperties="true" timeout="0" maxResults="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="restrequest" name="produktsList" id="81c73213-50c2-4037-9a33-19f38b68c5ee"><con:settings/><con:config service="http://jbjork.nu" resourcePath="/api/" methodName="Api" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="produktsList" id="f2584e65-d8d7-438a-95b5-a0465374f0ed" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>http://jbjork.nu</con:endpoint><con:request/><con:originalUri>http://jbjork.nu/api/</con:originalUri><con:credentials><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="7e3fd9fd-5905-4c64-b53f-1e0b6b4c767e"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+
+// A list of Products in Finna siffor
+def productListStep = testRunner.runTestStepByName("produktsList")
+def response = productListStep.getResponse()
+def jsonStr = response.getContentAsString()
+
+JsonSlurper serializer = new JsonSlurper()
+def object = serializer.parseText(jsonStr)
+
+object.each{
+	log.info(it.name)
+	}</script></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>81c73213-50c2-4037-9a33-19f38b68c5ee</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:testCase id="b9c0278e-b5d9-4ef0-a784-4d51e1d74203" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Få tillbaka rätt antal produkter" searchProperties="true" timeout="0" maxResults="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="restrequest" name="REST Request" id="1bf48711-f1cf-4624-8d12-78afcabaaf0b"><con:settings/><con:config service="http://jbjork.nu" methodName="Api" resourcePath="/api/" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="4210a1ed-09e1-4b3b-a49b-afe96d719a75" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://jbjork.nu</con:endpoint><con:request/><con:originalUri>http://jbjork.nu/api/</con:originalUri><con:assertion type="JsonPath Count" id="c616a068-7c1f-444e-bf8f-38f5ce57a7de" name="JSONPath Count"><con:configuration><path>$</path><content>24</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="f0723846-53b6-49df-95fd-cfd2f7c61f33"><con:settings/><con:config><script>import groovy.json.JsonSlurper
+
+def ResponseMessage = messageExchange.response.responseContent
+def ParsedMessage = new JsonSlurper().parseText(ResponseMessage)
+assert !(ParsedMessage.isEmpty())
+
+assert ParsedMessage.id != null
+assert ParsedMessage.name != null
+assert ParsedMessage.size() > 10</script></con:config></con:testStep><con:properties/><con:reportParameters/></con:testCase><con:testCase id="64d87242-acc1-4eba-915b-1a0b0043ddb4" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Anropa genom att köra 100 anrop" searchProperties="true" timeout="0" maxResults="0"><con:settings/><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="restrequest" name="REST Request" id="093b70b1-341d-47a7-96aa-3ba3cc9e9e27"><con:settings/><con:config service="http://jbjork.nu" methodName="Api" resourcePath="/api/" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="REST Request" id="5007156c-6da0-4d74-947b-d140310db44e" mediaType="application/json"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://jbjork.nu</con:endpoint><con:request/><con:originalUri>http://jbjork.nu/api/</con:originalUri><con:credentials><con:selectedAuthProfile>Inherit From Parent</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:parameters/></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy Script" id="64ae4ba7-4929-4c38-ae03-4d21eccc1335"><con:settings/><con:config><script> for(int i = 1; i &lt;=2; i++)
+{
+teststepAPI1 = testRunner.testCase.testSuite.getTestCaseByName("Får tillbaka en lista på alla produkter.").getTestStepByName("Groovy Script");
+result1 = (teststepAPI1.run(testRunner, context)).getStatus().toString()
+
+teststepAPI2 = testRunner.testCase.testSuite.getTestCaseByName("Får tillbaka rätt antal produkter (mer än tio).").getTestStepByName("REST Request");
+result2 = (teststepAPI2.run(testRunner, context)).getStatus().toString() 
+
+log.info("Testcase1" + result1 + i)
+log.info("Testcase2" + result2 + i)
+}</script></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>093b70b1-341d-47a7-96aa-3ba3cc9e9e27</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase><con:properties/><con:reportParameters/></con:testSuite><con:savedRecentRuns>1</con:savedRecentRuns><con:properties/><con:wssContainer/><con:databaseConnectionContainer/><con:jmsConnectionContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/><con:reporting><con:reportTemplates/><con:xmlTemplates/><con:xmlTemplates/><con:parameters/><con:parameters/></con:reporting><con:reporting/><con:eventHandlers type="RequestFilter.filterRequest" name="RequestFilter.filterRequest"><con:script>// Sample event script to add custom HTTP header to all outgoing REST, SOAP and HTTP(S) calls
+// This code is often used for adding custom authentication to SoapUI Pro tests
+
+// If hardcoding the token, uncomment and change line 5
+// def token = '4567'
+
+// If your token is parameterized in Project level custom property, uncomment line 8
+// def token = request.parent.testCase.testSuite.project.getProperty('auth_token').getValue()
+
+// To modify all outgoing calls, remove comments from lines 11 to 16
+// def headers = request.requestHeaders
+// if (headers.containsKey('auth_token2') == false) {
+//   headers.put('auth_token2', token)
+//   request.requestHeaders = headers
+// }</con:script></con:eventHandlers><con:eventHandlers type="TestRunListener.afterStep" name="TestRunListener.afterStep"><con:script>// Save all test step results into files
+// Change the directory path in line 5 to a location where you want to store details
+// then uncomment lines 5 to 10
+
+// filePath = 'C:\\tempOutputDirectory\\'
+// fos = new FileOutputStream(filePath + testStepResult.testStep.label + '.txt', true)
+// pw = new PrintWriter(fos)
+// testStepResult.writeTo(pw)
+// pw.close()
+// fos.close()</con:script></con:eventHandlers><con:authRepository/><con:tags/><con:sensitiveInformation/></con:soapui-project>
